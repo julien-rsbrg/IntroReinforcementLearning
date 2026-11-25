@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Frozen Lake · Evaluate parameters</title>
+  <link rel="icon" href="/assets/yeti-happy.png">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <div class="title">
+    <img src="/assets/yeti-happy.png" alt="" width="40" height="40">
+    <div>
+      <h1>Evaluate your Q-learning parameters</h1>
+      <p>A fresh agent learns for only <b>100 steps</b> on each standard map, then plays one test run greedily (ε = 0, no learning).</p>
+    </div>
+  </div>
+  <nav class="nav"><a href="/">← Back to the playground</a></nav>
+</header>
+
+<section class="panel">
+  <div class="panel-head"><h2>Parameters</h2></div>
+  <form id="params" class="param-grid">
+    <fieldset>
+      <legend>Agent</legend>
+      <label class="slider" title="Learning rate">α learning rate <input name="alpha" type="range" min="0" max="1" step="0.01"><output></output></label>
+      <label class="slider" title="Discount factor">γ discount <input name="gamma" type="range" min="0" max="1" step="0.01"><output></output></label>
+      <label class="slider" title="Exploration rate during learning">ε exploration <input name="epsilon" type="range" min="0" max="1" step="0.01"><output></output></label>
+      <label class="slider" title="ε is multiplied by this after each episode">ε decay <input name="epsilon_decay" type="range" min="0.5" max="1" step="0.01"><output></output></label>
+      <label class="numfield" title="Initial value of every Q(s,a). A high value makes the agent optimistic: it tries actions it does not know yet.">Q initial value <input name="q_init" type="number" step="0.1" min="-10" max="10"></label>
+    </fieldset>
+    <fieldset>
+      <legend>Rewards used while learning</legend>
+      <label class="numfield"><img src="/assets/ice.png" alt=""> entering ice <input name="reward_ice" type="number" step="0.01" min="-100" max="100"></label>
+      <label class="numfield"><img src="/assets/water.png" alt=""> falling in water <input name="reward_water" type="number" step="0.1" min="-100" max="100"></label>
+      <label class="numfield"><img src="/assets/yeti-happy.png" alt=""> reaching the yeti <input name="reward_goal" type="number" step="0.1" min="-100" max="100"></label>
+      <p class="hint">The test score does not use these: it is always <b>1 if the yeti is reached, 0 otherwise</b>, so that every parameter set is compared on the same scale.</p>
+    </fieldset>
+    <fieldset>
+      <legend>Evaluation</legend>
+      <label class="numfield" title="The whole protocol (100 learning steps + 1 test run) is repeated with different random seeds and the scores are averaged.">Repetitions per map <input name="repeats" type="number" min="1" max="50" step="1"></label>
+      <p class="hint">Each repetition uses a different random seed; seeds are the same for every parameter set, so comparisons are fair.</p>
+      <div class="row">
+        <button type="submit" id="btn-eval" class="primary">Evaluate ▸</button>
+        <button type="button" id="btn-defaults">Defaults</button>
+      </div>
+    </fieldset>
+  </form>
+</section>
+
+<section class="panel chart-panel">
+  <div class="panel-head">
+    <h2>Normal ice</h2>
+    <div class="chart-legend" id="legend-normal"></div>
+  </div>
+  <div id="chart-normal" class="chart"></div>
+  <div class="best-box" id="best-normal"></div>
+</section>
+
+<section class="panel chart-panel">
+  <div class="panel-head">
+    <h2>Slippery ice</h2>
+    <div class="chart-legend" id="legend-slippery"></div>
+  </div>
+  <div id="chart-slippery" class="chart"></div>
+  <div class="best-box" id="best-slippery"></div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <h2>History</h2>
+    <button id="btn-clear" class="danger">Clear history</button>
+  </div>
+  <p class="hint">Saved in this browser. ★ marks the best average on normal ice, ❄ the best on slippery ice. Click <b>Load</b> to put a set back in the form.</p>
+  <div class="table-wrap"><table id="history"></table></div>
+</section>
+
+<div id="tooltip" class="tooltip" hidden></div>
+<div id="toast" class="toast" hidden></div>
+<script src="/static/evaluate.js"></script>
+</body>
+</html>

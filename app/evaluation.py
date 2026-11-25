@@ -23,7 +23,7 @@ from .frozen_lake_yeti import PRESETS, FrozenLakeYeti
 from .qlearning import QLearningAgent
 
 TRAIN_STEPS = 100
-MAX_REPEATS = 50
+MAX_REPEATS = 100
 
 
 class EvalBody(BaseModel):
@@ -31,7 +31,7 @@ class EvalBody(BaseModel):
     gamma: float = Field(0.95, ge=0, le=1)
     epsilon: float = Field(0.2, ge=0, le=1)
     epsilon_decay: float = Field(1.0, ge=0.5, le=1)
-    q_init: float = Field(0.0, ge=-10, le=10)
+    q_init: float = Field(0.0, ge=-100, le=100)
     reward_ice: float = Field(0.0, ge=-100, le=100)
     reward_water: float = Field(0.0, ge=-100, le=100)
     reward_goal: float = Field(1.0, ge=-100, le=100)
